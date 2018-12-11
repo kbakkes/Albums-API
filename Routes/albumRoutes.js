@@ -39,8 +39,8 @@ var routes = function(Album){
           returnAlbum.links = {};
           var newLink = 'http://' + req.headers.host + '/api/albums/?genre=' + returnAlbum.genre;
           returnAlbum.links.FilterByThisGenre = newLink.replace('&','%26');
-          returnAlbum.links.back = 'http://' + req.headers.host + '/api/albums';
-          returnAlbum.links.self = 'http://' + req.headers.host + '/api/' + returnAlbum._id;
+          returnAlbum.links.collection = {'href':  'http://' + req.headers.host + '/api/albums'};
+          returnAlbum.links.self =  {'href': 'http://' + req.headers.host + '/api/' + returnAlbum._id};
 
           res.json(returnAlbum);
 
