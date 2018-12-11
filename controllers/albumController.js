@@ -60,8 +60,8 @@ var albumController = function(Album) {
                             albums.forEach(function (element, index, array) {
                                 let newAlbums = element.toJSON();
                                 newAlbums._links = {};
-                                newAlbums._links.self = 'http://' + req.headers.host + '/api/albums/Albums/' + newAlbums._id;
-                                newAlbums._links.collection = 'http://' + req.headers.host + '/api/albums/';
+                                newAlbums._links.self = { 'href' : 'http://' + req.headers.host + '/api/albums/' + newAlbums._id };
+                                newAlbums._links.collection = { 'href' : 'http://' + req.headers.host + '/api/albums/' };
 
                                 returnAlbums.push(newAlbums);
                                 collection.items = returnAlbums;
@@ -84,7 +84,6 @@ var albumController = function(Album) {
 
 
     var options = function (req, res) {
-        console.log("options");
         res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         res.header('Access-Control-Allow-Origin', '*');
         res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
