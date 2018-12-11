@@ -20,7 +20,7 @@ var albumController = function(Album) {
             })
         }
         else {
-            res.status(422).send("Je ma is dik")
+            res.status(422).send("Some fields are empty")
 
         }
     };
