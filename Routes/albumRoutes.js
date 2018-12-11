@@ -6,7 +6,7 @@ var routes = function(Album){
 
     var albumController = require('../controllers/albumController')(Album);
 
-    albumRouter.route('/')
+    albumRouter.route('/Albums')
         .post(albumController.post)
         .get(albumController.get)
         .options(albumController.options);
