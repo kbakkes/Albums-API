@@ -10,11 +10,6 @@ var albumController = function(Album) {
 
 
         if (req.body.name && req.body.artist && req.body.year && req.body.genre) {
-            res.status(400);
-            res.send("Fill in all field")
-        }
-        else {
-
             album.name = req.body.name;
             album.artist = req.body.artist;
             album.genre = req.body.genre;
@@ -23,6 +18,9 @@ var albumController = function(Album) {
             album.save(function (err, album) {
                 res.status(201).send(album);
             })
+        }
+        else {
+            res.status(422).send("Je ma is dik")
 
         }
     };
