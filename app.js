@@ -2,7 +2,6 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bluebird = require('bluebird');
 bodyParser = require('body-parser');
-cors = require('cors');
 require('mongoose-paginate');
 
 
@@ -36,7 +35,6 @@ app.use(function (req,res,next) {
 app.use('/api/albums', albumRouter);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use(cors());
 
 
 
