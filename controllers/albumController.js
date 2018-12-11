@@ -28,35 +28,63 @@ var albumController = function(Album) {
     };
 
 
-    var get = function (req, res) {
-
+    var get = function (req, res, next) {
+        console.log("get");
         var page = parseInt(req.query.start) || 1;
         var query = {};
 
-        if (req.query.genre) {
-            query.genre = req.query.genre;
+        if (req.query.client) {
+            query.client = req.query.client;
         }
 
+        Album.find().exec((err, countData) => {
+            if (err) {
+                return next(err);
+            }
+            var countItems = countData.length;
+            var limit = parseInt(req.query.limit) || countItems;
+            var albums = {};
+            var exclude = {__v: 0};
 
-        Album.find(query, function (err, albums) {
-            if (err)
-                res.status(500).send(err);
-            else
-                var returnAlbums = [];
+            Album.find({}, exclude)
+                .exec((err, albums) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    } else {
+                        let returnAlbums = [];
+                        let collection = {
+                            'items': [],
+                            '_links': [],
+                            'pagination': []
+                        };
+                            albums.forEach(function (element, index, array) {
+                                let newAlbums = element.toJSON();
+                                newAlbums._links = {};
+                                newAlbums._links.self = 'http://' + req.headers.host + '/api/albums/' + newAlbums._id;
+                                newAlbums._links.collection = 'http://' + req.headers.host + '/api/albums/';
 
-            albums.forEach(function (element, index, array) {
-                var newAlbum = element.toJSON();
-                newAlbum.links = {};
-                newAlbum.links.details = 'http://' + req.headers.host + '/api/' + newAlbum._id;
+                                returnAlbums.push(newAlbums);
+                                collection.items = returnAlbums;
+                            });
 
-                returnAlbums.push(newAlbum);
-            });
-            res.json(returnAlbums);
+                        collection._links = {};
+                        collection._links.self= {
+                            'href' : 'http://' + req.headers.host + '/api/albums/'
+                        };
+                        collection.pagination = {};
+                        collection.pagination.First = 'http://' + req.headers.host + '/api/albums/';
+                        collection.pagination.Last = 'http://' + req.headers.host + '/api/albums/';
+                        collection.pagination.Previous = 'http://' + req.headers.host + '/api/albums/';
+                        collection.pagination.Next = 'http://' + req.headers.host + '/api/albums/';
+                        res.json(collection);
+                        }
+                });
         });
     };
 
 
     var options = function (req, res) {
+        console.log("options");
         res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
         res.header('Access-Control-Allow-Origin', '*');
         res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
@@ -65,12 +93,9 @@ var albumController = function(Album) {
 
 
     return {
-
         post: post,
         get: get,
         options: options
-
-
     }
 };
 

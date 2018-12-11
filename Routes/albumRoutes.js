@@ -6,20 +6,14 @@ var routes = function(Album){
 
     var albumController = require('../controllers/albumController')(Album);
 
-    albumRouter.route('/Albums')
-
-
+    albumRouter.route('/')
         .post(albumController.post)
-
-        .get(albumController.get);
-
-        // .options(albumController.options);
+        .get(albumController.get)
+        .options(albumController.options);
 
 
 
-
-
-    albumRouter.use('/:_id',function(req,res,next){
+    albumRouter.use('/albums/:_id',function(req,res,next){
        Album.findById(req.params._id, function(err,album){
            if (err)
                res.status(500).send(err);
@@ -36,7 +30,7 @@ var routes = function(Album){
 
 
    });
-    albumRouter.route('/:albumId')
+    albumRouter.route('/albums/:albumId')
       .get(function(req,res) {
 
           var returnAlbum = req.album.toJSON();
@@ -51,10 +45,6 @@ var routes = function(Album){
           res.json(returnAlbum);
 
       })
-
-
-
-
 
 
       .put(function(req,res){
@@ -77,7 +67,6 @@ var routes = function(Album){
                 res.json({ message: 'Successfully deleted' });
             });
         });
-
 
 
     return albumRouter;
