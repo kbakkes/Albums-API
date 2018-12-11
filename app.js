@@ -22,14 +22,14 @@ albumRouter = require('./Routes/albumRoutes')(Album);
 var app = express();
 var port = process.env.PORT || 3000;
 
-
-
-app.use(function (req,res,next) {
-    console.log("options");
-    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-    next()
+    res.header('Access-Control-Allow-Headers', 'origin, content-type, accept');
+    if (req.accepts('json' || 'xml' || 'x-www-form-urlencoded')) {
+        next();
+    } else {
+        res.sendStatus(406);
+    }
 });
 
 app.use('/api/albums', albumRouter);

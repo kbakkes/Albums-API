@@ -66,6 +66,12 @@ var routes = function(Album){
 
                 res.json({ message: 'Successfully deleted' });
             });
+        })
+
+        .options(function (req, res) {
+            res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, DELETE, OPTIONS');
+            res.header('Allow', 'GET, PATCH, PUT, DELETE, OPTIONS');
+            res.sendStatus(200);
         });
 
 
