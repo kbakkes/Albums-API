@@ -9,7 +9,7 @@ var albumController = function(Album) {
         let album = new Album();
 
 
-        if (req.body.name && req.body.artist && req.body.year && req.body.genre == "") {
+        if (req.body.name && req.body.artist && req.body.year && req.body.genre) {
             res.status(400);
             res.send("Fill in all field")
         }
@@ -60,7 +60,7 @@ var albumController = function(Album) {
                             albums.forEach(function (element, index, array) {
                                 let newAlbums = element.toJSON();
                                 newAlbums._links = {};
-                                newAlbums._links.self = 'http://' + req.headers.host + '/api/albums/' + newAlbums._id;
+                                newAlbums._links.self = 'http://' + req.headers.host + '/api/albums/Albums/' + newAlbums._id;
                                 newAlbums._links.collection = 'http://' + req.headers.host + '/api/albums/';
 
                                 returnAlbums.push(newAlbums);
